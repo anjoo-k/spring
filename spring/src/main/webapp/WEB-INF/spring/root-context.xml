@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+ 	<!--
+ 		root-context.xml(기본적으로 빈을 등록하는 파일)
+	 	서버 시작과 동시에 바로 읽혀지는 root-context.xml 문서
+	-->
+	
+	
+	<!--
+		빈이란?
+		빈(Bean)은 스프링 컨테이너에 의해 관리되는 재사용 가능한 소프트웨어 컴포넌트이다.
+		즉, 스프링 컨테이너가 관리하는 자바 객체를 뜻하며, 하나 이상의 빈(Bean)을 관리한다.
+		빈은 인스턴스화된 객체를 의미하며, 스프링 컨테이너에 등록된 객체를 스프링 빈이라고 한다.
+	 -->
+ 		
+	<!-- 
+		root-contex.xml
+		서버구동과 동시에 web.xml을 거쳐 바로 로딩되는 문서
+		=> 서버 구동과 동시에 세팅(빈으로 등록)해야하는 내용을 작성하면 된다.
+		DB연결 설정, 트랜잭션처리, 내외부 모듈연동 등
+	 -->
+
+	<!-- 커넥션풀을 쓸 수 있는 클래스
+		이렇게 빈으로 등록해주면 스프링이 이 객체가 필요할 때 만들어서 준다. -->
+	<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource" destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+		<property name="username" value="spring"/>
+		<property name="password" value="spring"/>
+	</bean>		 
+ 	<!-- 
+ 		BasicDataSource dataSource = new BasicDataSource();
+ 		dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+ 		dataSource.Url("jdbc:oracle:thin:@localhost:1521:xe");
+		... 로 작성해 주는 것
+ 	 -->
+ 	 
+ 	 <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+ 	 	<property name="configLocation" value="classpath:mybatis-config.xml"/>
+ 	 	<property name="dataSource" ref="dataSource"/>
+ 	 </bean>	 
+	<!-- 
+		SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
+		sqlSessionFactory.setConfigLocation("classpath:mybatis-config.xml");
+		sqlSassionFactory.setDataSource(dataSource);
+	 -->
+	 
+	 <bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession">
+	 	<constructor-arg ref="sqlSessionFactory"/>
+	 </bean>
+	 <!-- 
+	 	SqlSessionTemplate sqlSession = new SqlSessionTemplate(sqlSessionFactory);
+	  -->
+	 
+	 
+	 
+	 
+</beans>
