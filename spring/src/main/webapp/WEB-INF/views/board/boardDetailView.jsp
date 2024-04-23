@@ -63,15 +63,36 @@
    			<!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
             <div align="center">
             	<c:if test="${loginUser.userId eq b.boardWriter}">
-	                <a class="btn btn-primary" onclick="">수정하기</a>
-	                <a class="btn btn-danger" onclick="">삭제하기</a>
+	                <a class="btn btn-primary" onclick="postFormSubmit('edit')">수정하기</a>
+	                <a class="btn btn-danger" onclick="postFormSubmit('delete')">삭제하기</a>
                 </c:if>
             </div>
             <br><br>
+            
+            <form action="" method="POST" id="postForm">
+            	<input type="hidden" name="bno" value="${b.boardNo}">
+            </form>
+            
+            <script>
+            	function postFormSubmit(type){
+            		const formEl = document.querySelector("#postForm");
+            		switch(type){
+	            		case "edit" : {
+	            			// formEl.action = "updateForm.bo";
+	            			$(formEl).attr("action", "updateForm.bo")
+	            		}break;
+	            		case "delete":{
+	            			//// formEl.action = "delete.bo";
+	            			$(formEl).attr("action", "delete.bo")	
+	            		}break;
+	            	}
+            		$(formEl).submit();
+            	}
+            </script>
            
             
              <form action="" method="post" id="postForm">
-           		<input type="hidden" name=bno value="7">
+           		<input type="hidden" name="bno" value="7">
            		<input type="hidden" name="filePath" value="이미지.jpg">
              </form>
             
@@ -119,7 +140,7 @@
         <br><br>
         <script>
             $(function(){ // 아래 data 로 들어감, callback 이 들어옴
-                getReplyList({bno : ${b.boardNo}}, function(result){ 
+                getReplyList({bno : ${b.boardNo}}, function(result){
                     // result = result.map(r => {
                     //     return {
                     //         ...r,
@@ -210,6 +231,7 @@
                         console.log(reply);
                     }
                 }
+            }
 
                 //ui라이브러리형식으로 구성하기
                 // for (let item of itemList) {
@@ -223,8 +245,8 @@
                 //         item.rowEvent(item);
                 //     }
                 // }
-               
-            }
+                
+            
         </script>
 
     </div>

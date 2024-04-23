@@ -35,7 +35,14 @@ public class BoardDao {
 	public ArrayList<Reply> selectReply(SqlSessionTemplate sqlSession, int bno){
 		return (ArrayList)sqlSession.selectList("boardMapper.selectReply", bno);
 	}
+
+	public int insertBoard(SqlSessionTemplate sqlSession, Board b){
+		return sqlSession.insert("boardMapper.insertBoard", b);
+	} 	//성공하면1 실패하면0리턴
 	
+	public int updateBoard(SqlSessionTemplate sqlSession, Board b){
+		return sqlSession.update("boardMapper.updateBoard", b);
+	}
 	
 	
 }

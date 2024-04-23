@@ -192,6 +192,7 @@ public class MemberController { // 요청된 서블릿이 아래 메소드들로
 		// 두 구문이 일치하면 true를 반환 일치하지 않으면 false 반환
 		
 		bcryptPasswordEncoder.matches(m.getUserPwd(), loginUser.getUserPwd());
+		
 		if(loginUser == null) { // 아이디가 없는 경우
 			mv.addObject("errorMsg", "일치하는 아이디를 찾을 수 없습니다.");
 			mv.setViewName("common/errorPage");
