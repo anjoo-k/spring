@@ -148,6 +148,8 @@
                 <div class="modal-body">
                     <label for="userId" class="mr-sm-2">ID :</label>
                     <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Enter ID" id="userId" name="userId"> <br>
+                    <input type="checkbox" name="saveId" id="saveId" checked>
+                    <label for="userId" class="mr-sm-2">아이디저장</label>
                     <label for="userPwd" class="mr-sm-2">Password:</label>
                     <input type="password" class="form-control mb-2 mr-sm-2" placeholder="Enter password" id="userPwd" name="userPwd">
                 </div>

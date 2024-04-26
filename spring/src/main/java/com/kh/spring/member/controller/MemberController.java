@@ -1,6 +1,6 @@
 package com.kh.spring.member.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -201,6 +201,12 @@ public class MemberController { // 요청된 서블릿이 아래 메소드들로
 			mv.addObject("errorMsg", "비밀번호가 일치하지 않습니다.");
 			mv.setViewName("common/errorPage");
 		} else { //성공
+			Cookie ck = new Cookie("saveId", loginUser.getUserId());
+			if(saveId == null) {
+				ck.setMaxAge(0);
+			}
+			response.addCookie(ck);
+			
 			session.setAttribute("loginUser", loginUser);
 			mv.setViewName("redirect:/");
 		}

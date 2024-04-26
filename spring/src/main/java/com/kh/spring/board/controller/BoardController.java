@@ -188,4 +188,19 @@ public class BoardController {
 		}
 	}
 	
+	@ResponseBody // 리턴할 응답 바디를 직접 입력할꺼야
+	@RequestMapping("rinsert.bo")
+	public String ajaxInsertReply(Reply r) {
+		// 성공했을 때는 success, 실패했을 때는 fail
+//		int result = boardService.insertReply(r);
+		return boardService.insertReply(r) > 0 ? "success" : "fail";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="topList.bo", produces="application/json; charset=UTR-8")
+	public String ajaxTopBoardList() {
+//		ArrayList<Board> list = boardService.selectTopBoardList();
+		return new Gson().toJson(boardService.selectTopBoardList());
+	}
+	
 }
