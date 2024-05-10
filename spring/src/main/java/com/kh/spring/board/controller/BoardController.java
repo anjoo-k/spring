@@ -111,7 +111,7 @@ public class BoardController {
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		
 		//5자리 랜덤값
-		int ranNum = (int)Math.random() * 90000 + 10000;
+		int ranNum = (int)(Math.random() * 90000) + 10000;
 		
 		//확장자
 		String ext = originName.substring(originName.lastIndexOf("."));
