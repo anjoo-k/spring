@@ -8,6 +8,8 @@ import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,10 @@ import com.kh.spring.board.service.BoardService;
 import com.kh.spring.common.model.vo.PageInfo;
 import com.kh.spring.common.template.Pagination;
 
+import lombok.extern.slf4j.Slf4j;
+
+
+@ Slf4j
 // 스프링 빈에 등록
 @Controller
 public class BoardController {
@@ -31,10 +37,14 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
+//	private static final Logger logger = LoggerFactory.getLogger(BoardController.class); 대체-> @Slf4j
+	
 	
 	@RequestMapping("list.bo")
 	public String selectList(@RequestParam(value="cpage", defaultValue="1" )int currentPage, Model model) {
 		int boardCount = boardService.selectListCount();
+//		logger.info("list.bo 실행"); // 왜안돼!!!!!!!!!!!!
+		
 		
 		PageInfo pi = Pagination.getPageInfo(boardCount, currentPage, 10, 5);
 		ArrayList<Board> list = boardService.selectList(pi);
@@ -197,7 +207,7 @@ public class BoardController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="topList.bo", produces="application/json; charset=UTR-8")
+	@RequestMapping(value="topList.bo", produces="application/json; charset=UTF-8")
 	public String ajaxTopBoardList() {
 //		ArrayList<Board> list = boardService.selectTopBoardList();
 		return new Gson().toJson(boardService.selectTopBoardList());

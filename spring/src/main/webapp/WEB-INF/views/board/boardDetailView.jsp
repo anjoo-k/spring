@@ -68,31 +68,32 @@
                 </c:if>
             </div>
             <br><br>
-            
+
             <form action="" method="POST" id="postForm">
-            	<input type="hidden" name="bno" value="${b.boardNo}">
+                <input type="hidden" name="bno" value="${b.boardNo}">
             </form>
-            
+
             <script>
-            	function postFormSubmit(type){
-            		const formEl = document.querySelector("#postForm");
-            		switch(type){
-	            		case "edit" : {
-	            			// formEl.action = "updateForm.bo";
-	            			$(formEl).attr("action", "updateForm.bo")
-	            		}break;
-	            		case "delete":{
-	            			//// formEl.action = "delete.bo";
-	            			$(formEl).attr("action", "delete.bo")	
-	            		}break;
-	            	}
-            		$(formEl).submit();
-            	}
+                function postFormSubmit(type){
+                    const formEl = document.querySelector("#postForm");
+                    switch(type){
+                        case "edit" : {
+                            //formEl.action = "updateForm.bo";
+                            $(formEl).attr("action", "updateForm.bo");
+                        }break;
+                        case "delete":{
+                            //formEl.action = "delete.bo";
+                            $(formEl).attr("action", "delete.bo")
+                        }break;
+                    }
+                    
+                    $(formEl).submit();
+                }
             </script>
            
             
              <form action="" method="post" id="postForm">
-           		<input type="hidden" name="bno" value="7">
+           		<input type="hidden" name=bno value="7">
            		<input type="hidden" name="filePath" value="이미지.jpg">
              </form>
             
@@ -127,76 +128,50 @@
     
                 </thead>
                 <tbody>
-                   <!--
-                   	<tr>
-                        <th>admin</th>
-                        <td>댓글남깁니다</td>
-                        <td>2022-05-10</td>
-                    </tr>
-                   -->
                 </tbody>
             </table>
         </div>
         <br><br>
         <script>
-                $(function(){ // 아래 data 로 들어감, callback 이 들어옴
-                    getReplyList({bno : ${b.boardNo}}, function(result){
-                        // reulst = reulst.map(r => {
-                        //     return {
-                        //         ...r,
-                        //         cNo : 1
-                        //     }
-                        // })
+            $(function(){
+                getReplyList({bno : ${b.boardNo}}, function(result){
+                    // reulst = reulst.map(r => {
+                    //     return {
+                    //         ...r,
+                    //         cNo : 1
+                    //     }
+                    // })
 
-                        // reulst.push({
-                        //     cNo : 2,
-                        //     createDate : "2022-10-30",
-                        //     refBno : 0,
-                        //     replyContent : "안녕하세요",
-                        //     replyNo: 5,
-                        //     replyWriter: "admin"
-                        // });
+                    // reulst.push({
+                    //     cNo : 2,
+                    //     createDate : "2022-10-30",
+                    //     refBno : 0,
+                    //     replyContent : "안녕하세요",
+                    //     replyNo: 5,
+                    //     replyWriter: "admin"
+                    // });
 
-                        // const rList = {
-                            
-                        // }
-                        // for (let r of reulst) {
-                        //     if (rList[r.cNo]) {
-                        //         rList[r.cNo].push(r);
-                        //     } else {
-                        //         rList[r.cNo] = [r];
-                        //     }
-                        // }
-                        // console.log(rList)
+                    // const rList = {
                         
-                        setReplyCount(result.length)
-                        const list = getTdDataFormatToReply(result)
-                        
-                        
+                    // }
+                    // for (let r of reulst) {
+                    //     if (rList[r.cNo]) {
+                    //         rList[r.cNo].push(r);
+                    //     } else {
+                    //         rList[r.cNo] = [r];
+                    //     }
+                    // }
+                    // console.log(rList)
+                    
+                    setReplyCount(result.length)
+                    const list = getTdDataFormatToReply(result)
+                    
+                    
 
-                        const replyBody = document.querySelector("#replyArea tbody");
-                        drawTableList(result, replyBody);
-                    })
+                    const replyBody = document.querySelector("#replyArea tbody");
+                    drawTableList(result, replyBody);
                 })
-
-//                    const replyBody = document.querySelector("#replyArea tbody");
-//                    const list = [];
-//                   for (let r of result) {
-//                        list.push({
-//                            tdData1: r.replyWriter,
-//                            tdData2: r.replyContent,
-//                            tdData3: r.createDate,
-//                            rowEvent: function(){
-//                                console.log("클릭됨")
-//                            }
-//                        })
-//                    }
-//
-//                    drawTableList(result, replyBody);
-//                })
-//            })
-
-            
+            })
             
             //댓글 등록
             function addReply(){
@@ -204,23 +179,23 @@
                 //userId
                 //댓글내용
 
-                const boardNo = ${b.boardNo}; // ${} 안은 오류가 나지만, 서버에서 실행되서 들어오는거라서 노상관
+                const boardNo = ${b.boardNo};
                 const userId = "${loginUser.userId}";
-                const content = document.querySelector("content").value;
+                const content = document.querySelector("#content").value;
 
-            
-            addReplyAjax({
-                refBno: boardNo,
-                replyWriter: userId,
-                replyContent: content
-            }, function(res){ // 결과가 끝나면 나오는 callback
-                getReplyList({bno : ${b.boardNo}}, function(result){
-                    setReplyCount(result.length);
-                    drawTableList(result, document.querySelector("#replyArea tbody"));
-                }) // 아래의 data로 들어감
-                
-            })
-        }
+
+                addReplyAjax({
+                    refBno: boardNo,
+                    replyWriter: userId,
+                    replyContent: content
+                }, function(res){
+                    getReplyList({bno : ${b.boardNo}}, function(result){
+                        setReplyCount(result.length);
+                        drawTableList(result, document.querySelector("#replyArea tbody"));
+                    })
+                    
+                })
+            }
 
             //댓글 데이터 포맷변경
             function getTdDataFormatToReply(replyList){
@@ -238,16 +213,11 @@
 
                 return list;
             }
-
-
-                //댓글 카운트 넣기
-                function setReplyCount(count){
-                    const rCount = document.querySelector("#rcount");
-                    rCount.innerHTML = count;
-                }
-
-                // 바로 ajax를 호출하지 말고 함수를 하나 만들어서 ajax를 만들어라
-                // 나중에 파이널 때는 ajax만 모아놓은 파일을 따로 만들어서 호출할 것
+            //댓글 카운트 넣기
+            function setReplyCount(count){
+                const rCount = document.querySelector("#rcount");
+                rCount.innerHTML = count;
+            }
 
             function addReplyAjax(data, callback){
                 $.ajax({
@@ -261,15 +231,8 @@
                 })
             }
 
-           
-            
-
             // 댓글 목록 가져오기
             function getReplyList(data, callback){
-                // el 이 먼저 읽고 바꿔서 넣어준다.
-                // 특정번호를 가져오려면 상관없다.
-                // ${b.boardNo}
-
                 $.ajax({
                     url: 'rlist.bo',
                     data : data,
@@ -296,8 +259,6 @@
                 //             </tr>`;
                 // }
                 // replyBody.innerHTML = str;
-                
-                
 
                 //이벤트를 넣는 뷰를 작성하고 싶을 때               
                 for (let reply of itemList) {
@@ -312,20 +273,20 @@
                     }
                 }
 
-            //ui라이브러리형식으로 구성하기
-            // for (let item of itemList) {
-            //     const row = document.createElement('tr');
-            //     row.innerHTML = `<th>` + item.tdData1 + `</th>
-            //                           <td>` + item.tdData2 + `</td>
-            //                           <td>` + item.tdData3 + `</td>`
-            //     parent.appendChild(row);
-                
-            //     row.onclick = function(){
-            //         item.rowEvent(item);
-            //     }
-            // }
-           
-        }        
+                //ui라이브러리형식으로 구성하기
+                // for (let item of itemList) {
+                //     const row = document.createElement('tr');
+                //     row.innerHTML = `<th>` + item.tdData1 + `</th>
+                //                           <td>` + item.tdData2 + `</td>
+                //                           <td>` + item.tdData3 + `</td>`
+                //     parent.appendChild(row);
+                    
+                //     row.onclick = function(){
+                //         item.rowEvent(item);
+                //     }
+                // }
+               
+            }
         </script>
 
     </div>

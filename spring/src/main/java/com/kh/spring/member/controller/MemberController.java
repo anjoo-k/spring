@@ -1,6 +1,7 @@
 package com.kh.spring.member.controller;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,7 +160,7 @@ public class MemberController { // 요청된 서블릿이 아래 메소드들로
 	 */
 	
 	@RequestMapping("login.me") 					// http~~객체가 bean으로 만들어져 있으니 httpsession객체 그냥 가져와서 쓰면 됌
-	public ModelAndView loginMember(Member m, ModelAndView mv, HttpSession session) {
+	public ModelAndView loginMember(Member m, ModelAndView mv, HttpSession session, String saveId, HttpServletResponse response) {	
 		// 암호화 전 240418
 //		Member loginUser = memberService.loginMember(m);
 //
@@ -200,9 +201,9 @@ public class MemberController { // 요청된 서블릿이 아래 메소드들로
 			// 비밀번호가 
 			mv.addObject("errorMsg", "비밀번호가 일치하지 않습니다.");
 			mv.setViewName("common/errorPage");
-		} else { //성공
+		} else { // 성공
 			Cookie ck = new Cookie("saveId", loginUser.getUserId());
-			if(saveId == null) {
+			if (saveId == null) {
 				ck.setMaxAge(0);
 			}
 			response.addCookie(ck);

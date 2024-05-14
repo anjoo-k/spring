@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
  	<!--
  		root-context.xml(기본적으로 빈을 등록하는 파일)
 	 	서버 시작과 동시에 바로 읽혀지는 root-context.xml 문서
@@ -60,11 +64,18 @@
 	   -->
 	  
 	  <!-- 파일업로드 관련 빈등록 -->
-	  
 	  <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
 	  	<property name="maxUploadSize" value="100000000"/>
 	  	<property name="maxInMemorySize" value="100000000"/>
 	  </bean>
+	  
+	  <!-- @Aspect 및 하위어노테이션 활성화 -->
+	  <aop:aspectj-autoproxy />
+	  
+	  <!-- @Aspect 어노테이션도 scan 하기 위함 -->
+	  <context:component-scan base-package="com.kh.spring" use-default-filters="false">
+	  	<context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect"/>
+	  </context:component-scan>
 	
 	 
 	 
