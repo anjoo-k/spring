@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.kh" />
+	
+	
+	<!-- (요청이 일반 http 요청이 아니라 websocket 요청이면 잡아서 바꿔줌)
+		HttpSessionHandshakeInterceptor을 사용하지 않으면 세션(웹소켓세션) 활용이
+		어려워지고 해당 세션을 기반으로 작업할 수 없다. 
+		path로 들어오는 요청을 챗서버라는 객체가 잡아서 처리처리 -->
+	<websocket:handlers>
+	<!-- WebSocket 핸들러를 정의하는 루트 엘리먼트 -->
+		<websocket:mapping handler="chatServer" path="/server"/>
+	<!-- HttpSessionHandshakeInterceptor 를 정의 -->
+		<websocket:handshake-interceptors>
+	  		<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"></beans:bean>
+	  	</websocket:handshake-interceptors>
+	</websocket:handlers>
+	
+	
+	<!-- scan
+	base-package = 우리 프로젝트 패키지
+	거기서 component들을 찾겠다.
+	어노테이션들을 모아서 분석, 빈등록 등 해준다
+	 -->
+	 
+	 <!-- 
+	 	* 사용자가 특정 url로 요청 시 해당 문서가 읽혀진다고 생각하면 된다.
+	 	  핸들러 맵핑을 통해 어떤 controller을 구동시켜야 하는지 찾는다
+	 	 = 핸들러 맵핑(handlerMapping)을 통해 url 요청 시 어떤 Controller 구동시킬건지 찾아내야
+	 	 => 요청값에 적합한 controller 실행
+	 	 
+	 	 1. 요청될 떄 마다 실행될 controller 클래스들을 bean으로 등록
+	 	 <beans:bean class="com.kh.spring.member.controller.MemberController" id="loginContorller"/>
+		  -> 이게 빈에 등록한 것. 어떤 url로 등록되었는지 모른다. mapping 해주어야함
+		  
+		 2. 어떤 url로 요청 시 어떤 Controller을 구동시킬 것인지 맵핑(handlerMapping) 시켜줘야
+		 <beans:bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+			 <beans:property name="mapping">
+			 	<beans: prop key="login.me">loginController</bean:prop>
+			 </bean:bean:property>
+		 </beans:bean>
+		 	 	 
+	  -->
+
+</beans:beans>
