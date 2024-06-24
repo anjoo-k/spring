@@ -13,14 +13,18 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class concertAPItestRun {
+public class concertAPItestRun2 {
 	public static final String SERVICE_KEY = "d4772ba0c40045f184603b34c70fd40e";
 			
 	public static void main(String[] args) throws IOException {
-		String a = "PF242664";
-		String url = "http://www.kopis.or.kr/openApi/restful/pblprfr/" + a;
+		String url = "http://kopis.or.kr/openApi/restful/pblprfr";
 		url += "?service=" + SERVICE_KEY;
-		url += "&newsql=Y";
+		url += "&returnType=json"; // 리턴값은 기본이 xml이니까 json으로 하고 싶어서 넣어줌
+		url += "&stdate=20240601"; // 시작일
+		url += "&eddate=20240711"; //끝나는일
+		url += "&cpage=2"; //현재페이지
+		url += "&rows=20"; // 포스터 경로
+		url += "&shcate=GGGA"; //공연상태
 		
 		
 //		System.out.println(url);
@@ -62,32 +66,20 @@ public class concertAPItestRun {
 		System.out.println("2: " + totalObj);
 		
 		JsonObject dbsObj = totalObj.getAsJsonObject("dbs"); //totalObj 안에 있는 키로 object 꺼내올 수 있다
+		JsonArray dbArr = dbsObj.getAsJsonArray("db"); // {를 여는 것은 jsonObject {다음에 [있으면 array 시작
 		System.out.println("3: " + dbsObj);
+		System.out.println("4: " + dbArr.toString());
 		
-		JsonObject dbObj = dbsObj.getAsJsonObject("db"); // {를 여는 것은 jsonObject {다음에 [있으면 array 시작
-		System.out.println("4: " + dbObj);
+		JsonObject jOnj1 = dbArr.get(0).getAsJsonObject(); // 0번째에 담긴 정보를 가진 json 객체
+		System.out.println("5: " + jOnj1);
 		
-		System.out.println(dbObj.get("prfpdfrom").toString());
-		
-		JsonObject relates = dbObj.getAsJsonObject("relates");
-		System.out.println("5:" + relates);
-		
-		JsonObject relate = relates.getAsJsonObject("relate");
-		System.out.println(relate);
-		
-		System.out.println(relate.get("relateurl").toString());
-		
-//		JsonArray dbArr = dbsObj.getAsJsonArray("db");
-//		JsonObject jOnj1 = dbObj.get(0).getAsJsonObject(); // 0번째에 담긴 정보를 가진 json 객체
-//		System.out.println("5: " + jOnj1);
-//		
-//		for(int i = 0; i < dbArr.size(); i++) {
-//			JsonObject item = dbArr.get(i).getAsJsonObject();// i번째에 담긴 정보를 가진 json 객체
-//			System.out.println("공연이름: " + item.get("prfnm").getAsString());
-//			System.out.println("시작일: " + item.get("prfpdfrom").getAsString());
-//			System.out.println("공연시설명: " + item.get("fcltynm").getAsString());
+		for(int i = 0; i < dbArr.size(); i++) {
+			JsonObject item = dbArr.get(i).getAsJsonObject();// i번째에 담긴 정보를 가진 json 객체
+			System.out.println("공연이름: " + item.get("prfnm").getAsString());
+			System.out.println("시작일: " + item.get("prfpdfrom").getAsString());
+			System.out.println("공연시설명: " + item.get("fcltynm").getAsString());
 
-//		}
+		}
 		
 		br.close();
 		urlConnection.disconnect();

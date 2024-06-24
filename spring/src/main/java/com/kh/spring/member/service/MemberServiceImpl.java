@@ -7,16 +7,18 @@ import org.springframework.stereotype.Service;
 import com.kh.spring.member.model.dao.MemberDao;
 import com.kh.spring.member.model.vo.Member;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor // 메서드 대신 만들어줌(memcontroller 참고)
 @Service // Component 보다 더 구체화해서 Service bean으로 등록시키는 것 
 public class MemberServiceImpl implements MemberService {
 	
-	@Autowired
-	private SqlSessionTemplate sqlSession;
+	
+	private final SqlSessionTemplate sqlSession;
 	//기존의 myBatis sqlSession 객체 대체
 	// sqlSessionTemplate bean 등록 후 @Autowired 헀음
 
-	@Autowired
-	private MemberDao memberDao;
+	private final MemberDao memberDao;
 	// 객체생성하지 않고 주입받는다(스프링의 의존성)
 	
 	@Override

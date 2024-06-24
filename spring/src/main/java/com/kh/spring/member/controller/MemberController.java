@@ -25,11 +25,31 @@ import com.kh.spring.member.service.MemberService;
 @Controller
 public class MemberController { // 요청된 서블릿이 아래 메소드들로 연결됨
 	
-	@Autowired
-	private MemberService memberService;
+	// @Autowired: 스프링아 빈에 있는 것을 주입해라 
+	private final MemberService memberService;
 	
+	private final BCryptPasswordEncoder bcryptPasswordEncoder;
+	
+	
+	/* 240613
+	 * 필드 주입 방식
+	 * 스프링 컨테이너가 객체를 생성한 후, @Autowired 어노테이션이 붙은 필드에 의존성을 주입한다.
+	 * 진행되며 객체가 null이 되는 순간이 생김.
+	 * 
+	 * 생성자 주입 방식
+	 * 스프링 컨테이너가 객체를 생성할 때 생성자를 통해서 필요한 의존성을 주입한다.
+	 * (final 붙이고 아래 메서드 만듬)
+	 * 
+	 * 필드주입방식 -> 생성자주입방식 : 주입 시점 차이로 인해 객체가 완전히 초기화된 상태(null이 아닌) 상태로 사용할 수 있음을 보장하고,
+	 * 테스트 기능성과 유지보수성이 증가한다. 동시성확보
+	 */
 	@Autowired
-	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	public MemberController(MemberService memberService, BCryptPasswordEncoder bcryptPasswordEncoder) {
+		this.memberService = memberService;
+		this.bcryptPasswordEncoder = bcryptPasswordEncoder;
+	}
+	
+	
 	// private MemebrService memberService = new MemberServiceImpl();
 	// 위의 객체생성 필요없이 스프링 컨테이너에서 관리해줌
 	/*

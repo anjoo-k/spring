@@ -133,8 +133,14 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.7</version>
+			<version>4.13</version>
 			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework-version}</version>
 		</dependency>
 		
 		<!-- Lombok 라이브러리 -->
@@ -258,14 +264,6 @@
 		</dependency>
 		
 		
-				
-		
-		
-		
-		
-		
-		
-			
 	</dependencies>
 	
 
